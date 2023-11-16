@@ -60,11 +60,20 @@ export function* checkAffineEq(
           continue;
         }
         const A = affineFunc.split(" ").map((val) => +val);
-        const B = multiplyFuncs(multiplyFuncs(revFunc, A), boolFunctions[p2])
-          .map((val) => `${val}`)
-          .reduce((prev, cur) => prev + " " + cur);
-        if (affineFuncs.has(B)) {
-          answers[p1][p2 - p1 - 1] = { A: affineFunc, B };
+        const BList = multiplyFuncs(
+          multiplyFuncs(revFunc, A),
+          boolFunctions[p2]
+        );
+        const BKey = BList.map((val) => `${val ^ BList[0]}`).reduce(
+          (prev, cur) => prev + " " + cur
+        );
+        if (affineFuncs.has(BKey)) {
+          answers[p1][p2 - p1 - 1] = {
+            A: affineFunc,
+            B: BList.map((val) => `${val}`).reduce(
+              (prev, cur) => prev + " " + cur
+            ),
+          };
           currentFound++;
           if (currentFound === maxFound) return answers;
         }

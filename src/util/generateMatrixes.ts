@@ -11,7 +11,7 @@ export function* MatrixGenRecursive(
       const data = zeros.next();
       if (data.done) zerosRes = data.value;
     }
-    const ones = MatrixGenRecursive(dim, [[0]]);
+    const ones = MatrixGenRecursive(dim, [[1]]);
     let onesRes: number[][][] | null = null;
     while (onesRes === null) {
       const data = ones.next();

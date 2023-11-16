@@ -61,12 +61,9 @@ const AffineForm = ({ index, deleteButton }: IAffineFormProps) => {
         .reduce((pr, cur) => pr * cur);
     setMaxConst({
       matrixes: maxMatrixes,
-      affineFuncs: maxMatrixes * 2 ** n,
+      affineFuncs: maxMatrixes,
       affineFind:
-        maxMatrixes *
-        2 ** (n - 1) *
-        boolFunctions.length *
-        (boolFunctions.length - 1),
+        (maxMatrixes * boolFunctions.length * (boolFunctions.length - 1)) / 2,
     });
     abortingEval
       .start(checkAffineEq(boolFunctions, values.dims))

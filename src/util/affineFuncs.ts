@@ -23,12 +23,10 @@ export function* getAffineFuncs(
           }
         return res;
       });
-    for (let ind = 0; ind < 2 ** dim; ++ind) {
-      affineFunctions.add(
-        vec.map((val) => `${val ^ ind}`).reduce((pr, cur) => pr + " " + cur)
-      );
-      yield { type: "genAffineFuncs", value: `${affineFunctions.size}` };
-    }
+    affineFunctions.add(
+      vec.map((val) => `${val ^ vec[0]}`).reduce((pr, cur) => pr + " " + cur)
+    );
+    yield { type: "genAffineFuncs", value: `${affineFunctions.size}` };
   }
   return affineFunctions;
 }
