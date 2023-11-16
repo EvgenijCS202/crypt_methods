@@ -6,7 +6,7 @@ export function* checkAffineEq(
   dim: number
 ): Generator<EvaluatingStatus, ({ A: string; B: string } | null)[][], unknown> {
   const iter1 = getAffineFuncs(dim);
-  let affineFuncs: string[] = [];
+  let affineFuncs: Set<string> = new Set();
   let done: boolean | undefined = false;
   while (!done) {
     const data = iter1.next();
@@ -27,8 +27,9 @@ export function* checkAffineEq(
 
   let currentFound = 0;
   const maxFound = (boolFunctions.length * (boolFunctions.length - 1)) / 2;
-
-  for (let i = 0; i < affineFuncs.length; ++i) {
+  let i = -1;
+  for (const affineFunc of affineFuncs) {
+    ++i;
     let c = 0;
     for (let p1 = 0; p1 < boolFunctions.length - 1; ++p1) {
       if (
@@ -58,12 +59,12 @@ export function* checkAffineEq(
           };
           continue;
         }
-        const A = affineFuncs[i].split(" ").map((val) => +val);
+        const A = affineFunc.split(" ").map((val) => +val);
         const B = multiplyFuncs(multiplyFuncs(revFunc, A), boolFunctions[p2])
           .map((val) => `${val}`)
           .reduce((prev, cur) => prev + " " + cur);
-        if (affineFuncs.includes(B)) {
-          answers[p1][p2 - p1 - 1] = { A: affineFuncs[i], B };
+        if (affineFuncs.has(B)) {
+          answers[p1][p2 - p1 - 1] = { A: affineFunc, B };
           currentFound++;
           if (currentFound === maxFound) return answers;
         }

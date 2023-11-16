@@ -3,7 +3,7 @@ import { MatrixGenRecursive } from "./generateMatrixes";
 
 export function* getAffineFuncs(
   dim: number
-): Generator<EvaluatingStatus, string[], unknown> {
+): Generator<EvaluatingStatus, Set<string>, unknown> {
   const generatedGen = MatrixGenRecursive(dim, null);
   let generated: number[][][] | null = null;
   while (generated === null) {
@@ -11,7 +11,7 @@ export function* getAffineFuncs(
     if (data.done) generated = data.value;
     else yield data.value;
   }
-  let affineFunctions: string[] = [];
+  let affineFunctions: Set<string> = new Set();
   for (const matrix of generated) {
     const vec = Array(2 ** dim)
       .fill(null)
@@ -24,10 +24,10 @@ export function* getAffineFuncs(
         return res;
       });
     for (let ind = 0; ind < 2 ** dim; ++ind) {
-      affineFunctions.push(
+      affineFunctions.add(
         vec.map((val) => `${val ^ ind}`).reduce((pr, cur) => pr + " " + cur)
       );
-      yield { type: "genAffineFuncs", value: `${affineFunctions.length}` };
+      yield { type: "genAffineFuncs", value: `${affineFunctions.size}` };
     }
   }
   return affineFunctions;

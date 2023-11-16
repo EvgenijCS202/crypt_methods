@@ -195,9 +195,9 @@ const AffineForm = ({ index, deleteButton }: IAffineFormProps) => {
       {answer !== undefined ? (
         <Row align="middle" style={{ marginTop: 10 }}>
           {answer.map((row, p1) => (
-            <>
+            <Fragment key={p1}>
               {row.map((ans, p2) => (
-                <>
+                <Fragment key={p2}>
                   <Col span={24}>
                     <Typography.Title style={{ marginBlock: 0 }} level={4}>
                       Подстановки {p1 + 1} и {p1 + p2 + 2}.
@@ -249,9 +249,9 @@ const AffineForm = ({ index, deleteButton }: IAffineFormProps) => {
                       </Col>
                     </>
                   )}
-                </>
+                </Fragment>
               ))}
-            </>
+            </Fragment>
           ))}
         </Row>
       ) : (
